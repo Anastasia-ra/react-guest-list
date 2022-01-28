@@ -1,5 +1,17 @@
 import './App.css';
+import {
+  inputFieldStyle,
+  buttonStyle,
+  listStyle,
+  guestStyle,
+  appStyle,
+  inputGridStyle,
+  guestListStyle,
+  removeButton,
+} from './Style';
 import { useState, useEffect } from 'react';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 
 const baseUrl = 'http://localhost:4000';
 
@@ -10,50 +22,60 @@ function GuestList({ children }) {
 
 // List item of each guest
 function Guest(props) {
+  const [toggleAttending, setToggleAttending] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  async function updateAttending(id) {
+    const response = await fetch(`${baseUrl}/guests/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ attending: !toggleAttending }),
+    });
+    const updatedGuest = await response.json();
+    console.log(updatedGuest);
+    setToggleAttending(!toggleAttending);
+  }
+
   return (
-    <li key={props.firstName}>
+    <li key={props.firstName} css={listStyle}>
       <input
+        aria-label="attending"
         type="checkbox"
         checked={isChecked}
-        onChange={(e) => e.currentTarget.checked}
+        onChange={(e) => {
+          setIsChecked(e.currentTarget.checked);
+          updateAttending(props.id);
+        }}
       />
       Name: {props.firstName} {props.lastName}
     </li>
   );
 }
 
-// Button + function to remove guest
-// function Delete({ id }) {
-//   const [removeIsClicked, setRemoveIsClicked] = useState(false);
-//   async function handleRemove() {
-//     const response = await fetch(`${baseUrl}/guests/${id}`, {
-//       method: 'DELETE',
-//     });
-//     const deletedGuest = await response.json();
-//     console.log(deletedGuest);
-//   }
-
+// function DisabledInput() {
 //   return (
-//     <button
-//       onClick={() => {
-//         handleRemove();
-//         setRemoveIsClicked(!removeIsClicked);
-//       }}
-//     >
-//       Remove
-//     </button>
+//     <div>
+//       <label>
+//         First Name -d
+//         <input />
+//       </label>
+//       <label>
+//         Last Name -d
+//         <input />
+//       </label>
+//     </div>
 //   );
 // }
 
 function App() {
   const [guestFirstName, setGuestFirstName] = useState('');
   const [guestLastName, setGuestLastName] = useState('');
-  // const [guestList, setGuestList] = useState([]);
   const [allGuestsList, setAllGuestsList] = useState([]);
   const [newGuestClicked, setNewGuestClicked] = useState(false);
-  // const [removeIsClicked, setRemoveIsClicked] = useState(false);
   const [remove, setRemove] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Add user
   async function createUser(input1, input2) {
@@ -69,17 +91,8 @@ function App() {
     });
     const createdGuest = await response.json();
     console.log(createdGuest);
-    // setGuestList((prev) => [...prev, createdGuest]);
     setNewGuestClicked(!newGuestClicked);
   }
-  // useEffect(() => {
-  //   async function myFetch() {
-  //     await createUser();
-  //   }
-  //   myFetch().catch((err) => {
-  //     console.log(err);
-  //   });
-  // }, []);
 
   // Get all guests
 
@@ -102,54 +115,80 @@ function App() {
     getAllGuests();
   }, [guestFirstName, guestLastName, remove, newGuestClicked]);
 
+  // if (allGuestsList.length === 0) {
+  //   return <h1>Loading...</h1>;
+  // }
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+  // }, []);
+
+  // if (loading) {
+  //   return (
+  //     <div>
+  //       {/* <DisabledInput /> */}
+  //       <div>Loading....</div>
+  //     </div>
+  //   );
+  // }
   return (
-    <div className="App">
+    <div className="App" css={appStyle}>
       <div data-test-id="guest">
-        <label>
-          First Name
-          <input
-            value={guestFirstName}
-            onChange={(event) => {
-              setGuestFirstName(event.currentTarget.value);
+        <div css={inputGridStyle}>
+          <label>
+            First Name
+            <input
+              css={inputFieldStyle}
+              value={guestFirstName}
+              onChange={(event) => {
+                setGuestFirstName(event.currentTarget.value);
+              }}
+            />
+          </label>
+          <br />
+          <label>
+            Last Name
+            <input
+              css={inputFieldStyle}
+              value={guestLastName}
+              onChange={(event) => {
+                setGuestLastName(event.currentTarget.value);
+              }}
+            />
+          </label>
+          <br />
+          <button
+            css={buttonStyle}
+            onClick={() => {
+              createUser(guestFirstName, guestLastName);
+              setGuestFirstName('');
+              setGuestLastName('');
             }}
-          />
-        </label>
-        <label>
-          Last Name
-          <input
-            value={guestLastName}
-            onChange={(event) => {
-              setGuestLastName(event.currentTarget.value);
-            }}
-          />
-        </label>
-        <button
-          onClick={() => {
-            createUser(guestFirstName, guestLastName);
-            setGuestFirstName('');
-            setGuestLastName('');
-          }}
-        >
-          Create User
-        </button>
-        <GuestList>
+          >
+            Create User
+          </button>
+        </div>
+        <GuestList css={guestListStyle}>
           {allGuestsList.map((e) => {
             return (
-              <div key={e.id + e.firstName}>
+              <div css={guestStyle} key={e.id + e.firstName}>
                 <Guest
                   key={e.id + e.firstName + e.lastName}
                   firstName={e.firstName}
                   lastName={e.lastName}
                   attending={e.attending.toString()}
+                  id={e.id}
                 />
                 {/* <Delete
                   key={'remove' + e.id + e.firstName + e.lastName}
                   id={e.id}
                 /> */}
                 <button
+                  css={removeButton}
                   onClick={() => {
                     handleRemove(e.id);
-                    // setRemoveIsClicked(!removeIsClicked);
                   }}
                 >
                   Remove
