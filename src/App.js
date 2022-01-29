@@ -75,7 +75,7 @@ function App() {
   const [allGuestsList, setAllGuestsList] = useState([]);
   const [newGuestClicked, setNewGuestClicked] = useState(false);
   const [remove, setRemove] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Add user
   async function createUser(input1, input2) {
@@ -111,9 +111,12 @@ function App() {
       const allGuests = await response.json();
       console.log(allGuests);
       setAllGuestsList(allGuests);
+      setLoading(false);
     }
     getAllGuests();
   }, [guestFirstName, guestLastName, remove, newGuestClicked]);
+
+  const disabled = loading ? true : false;
 
   // if (allGuestsList.length === 0) {
   //   return <h1>Loading...</h1>;
@@ -145,6 +148,7 @@ function App() {
               onChange={(event) => {
                 setGuestFirstName(event.currentTarget.value);
               }}
+              disabled={disabled}
             />
           </label>
           <br />
@@ -156,6 +160,7 @@ function App() {
               onChange={(event) => {
                 setGuestLastName(event.currentTarget.value);
               }}
+              disabled={disabled}
             />
           </label>
           <br />
@@ -170,33 +175,37 @@ function App() {
             Create User
           </button>
         </div>
-        <GuestList css={guestListStyle}>
-          {allGuestsList.map((e) => {
-            return (
-              <div css={guestStyle} key={e.id + e.firstName}>
-                <Guest
-                  key={e.id + e.firstName + e.lastName}
-                  firstName={e.firstName}
-                  lastName={e.lastName}
-                  attending={e.attending.toString()}
-                  id={e.id}
-                />
-                {/* <Delete
+        {loading === true && <p>Loading...</p>}
+        {/* Only displays the guest list when it's not loading */}
+        {loading === false && (
+          <GuestList css={guestListStyle}>
+            {allGuestsList.map((e) => {
+              return (
+                <div css={guestStyle} key={e.id + e.firstName}>
+                  <Guest
+                    key={e.id + e.firstName + e.lastName}
+                    firstName={e.firstName}
+                    lastName={e.lastName}
+                    attending={e.attending.toString()}
+                    id={e.id}
+                  />
+                  {/* <Delete
                   key={'remove' + e.id + e.firstName + e.lastName}
                   id={e.id}
                 /> */}
-                <button
-                  css={removeButton}
-                  onClick={() => {
-                    handleRemove(e.id);
-                  }}
-                >
-                  Remove
-                </button>
-              </div>
-            );
-          })}
-        </GuestList>
+                  <button
+                    css={removeButton}
+                    onClick={() => {
+                      handleRemove(e.id);
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              );
+            })}
+          </GuestList>
+        )}
       </div>
     </div>
   );
