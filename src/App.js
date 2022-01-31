@@ -11,7 +11,7 @@ import {
 } from './Style';
 import { useState, useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
+// import { css } from '@emotion/react';
 
 const baseUrl = 'http://localhost:4000';
 
@@ -46,28 +46,15 @@ function Guest(props) {
         checked={isChecked}
         onChange={(e) => {
           setIsChecked(e.currentTarget.checked);
-          updateAttending(props.id);
+          updateAttending(props.id).catch((error) => {
+            console.error('Error:', error);
+          });
         }}
       />
       Name: {props.firstName} {props.lastName}
     </li>
   );
 }
-
-// function DisabledInput() {
-//   return (
-//     <div>
-//       <label>
-//         First Name -d
-//         <input />
-//       </label>
-//       <label>
-//         Last Name -d
-//         <input />
-//       </label>
-//     </div>
-//   );
-// }
 
 function App() {
   const [guestFirstName, setGuestFirstName] = useState('');
@@ -113,29 +100,28 @@ function App() {
       setAllGuestsList(allGuests);
       setLoading(false);
     }
-    getAllGuests();
+    getAllGuests().catch((error) => {
+      console.error('Error:', error);
+    });
   }, [guestFirstName, guestLastName, remove, newGuestClicked]);
 
   const disabled = loading ? true : false;
 
-  // if (allGuestsList.length === 0) {
-  //   return <h1>Loading...</h1>;
-  // }
-
+  // creates User when enter in input
   // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 2000);
-  // }, []);
-
-  // if (loading) {
-  //   return (
-  //     <div>
-  //       {/* <DisabledInput /> */}
-  //       <div>Loading....</div>
-  //     </div>
+  //   createUser(guestFirstName, guestLastName).catch((error) =>
+  //     console.error(error),
   //   );
+  // }, [guestLastName]);
+
+  // handle Enter on Lastname
+  // function handleChange(event) {
+  //   if (event.key === 'Enter') {
+  //     console.log('It worked!');
+  //     // setGuestLastName(event.currentTarget.value);
+  //   }
   // }
+
   return (
     <div className="App" css={appStyle}>
       <div data-test-id="guest">
@@ -160,6 +146,18 @@ function App() {
               onChange={(event) => {
                 setGuestLastName(event.currentTarget.value);
               }}
+              onKeyPress={
+                (event) => {
+                  if (event.key === 'Enter') {
+                    console.log('It worked!');
+                    createUser(guestFirstName, guestLastName).catch((error) => {
+                      console.error('Error:', error);
+                    });
+                    // setGuestLastName(event.currentTarget.value);
+                  }
+                }
+                // e.key === 'Enter' && setGuestLastName(event.currentTarget.value);
+              }
               disabled={disabled}
             />
           </label>
@@ -167,7 +165,9 @@ function App() {
           <button
             css={buttonStyle}
             onClick={() => {
-              createUser(guestFirstName, guestLastName);
+              createUser(guestFirstName, guestLastName).catch((error) => {
+                console.error('Error:', error);
+              });
               setGuestFirstName('');
               setGuestLastName('');
             }}
@@ -175,9 +175,10 @@ function App() {
             Create User
           </button>
         </div>
-        {loading === true && <p>Loading...</p>}
-        {/* Only displays the guest list when it's not loading */}
-        {loading === false && (
+        {/* Displays loading message while guest list is loading*/}
+        {loading === true ? (
+          <p>Loading...</p>
+        ) : (
           <GuestList css={guestListStyle}>
             {allGuestsList.map((e) => {
               return (
@@ -189,14 +190,12 @@ function App() {
                     attending={e.attending.toString()}
                     id={e.id}
                   />
-                  {/* <Delete
-                  key={'remove' + e.id + e.firstName + e.lastName}
-                  id={e.id}
-                /> */}
                   <button
                     css={removeButton}
                     onClick={() => {
-                      handleRemove(e.id);
+                      handleRemove(e.id).catch((error) => {
+                        console.error('Error:', error);
+                      });
                     }}
                   >
                     Remove
