@@ -124,6 +124,7 @@ function App() {
 
   return (
     <div className="App" css={appStyle}>
+      <h1> Awesome party guest list </h1>
       <div data-test-id="guest">
         <div css={inputGridStyle}>
           <label>
