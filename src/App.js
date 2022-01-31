@@ -79,6 +79,8 @@ function App() {
     const createdGuest = await response.json();
     console.log(createdGuest);
     setNewGuestClicked(!newGuestClicked);
+    setGuestFirstName('');
+    setGuestLastName('');
   }
 
   // Get all guests
@@ -169,8 +171,6 @@ function App() {
               createUser(guestFirstName, guestLastName).catch((error) => {
                 console.error('Error:', error);
               });
-              setGuestFirstName('');
-              setGuestLastName('');
             }}
           >
             Create User
