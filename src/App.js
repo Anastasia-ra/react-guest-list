@@ -100,25 +100,12 @@ function App() {
       const allGuests = await response.json();
       console.log(allGuests);
       setAllGuestsList(allGuests);
-      // setLoading(false);
-    }
-    getAllGuests().catch((error) => {
-      console.error('Error:', error);
-    });
-  }, [guestFirstName, guestLastName, remove, newGuestClicked]);
-
-  useEffect(() => {
-    async function getAllGuests() {
-      const response = await fetch(`${baseUrl}/guests`);
-      const allGuests = await response.json();
-      console.log(allGuests);
-      setAllGuestsList(allGuests);
       setLoading(false);
     }
     getAllGuests().catch((error) => {
       console.error('Error:', error);
     });
-  }, []);
+  }, [/* guestFirstName, */ guestLastName, remove, newGuestClicked]);
 
   const disabled = loading ? true : false;
 
@@ -139,7 +126,7 @@ function App() {
 
   return (
     <div className="App" css={appStyle}>
-      <h1> Awesome party guest list </h1>
+      <h1> Party guest list </h1>
       <div data-test-id="guest">
         <div css={inputGridStyle}>
           <label>
@@ -162,18 +149,13 @@ function App() {
               onChange={(event) => {
                 setGuestLastName(event.currentTarget.value);
               }}
-              onKeyPress={
-                (event) => {
-                  if (event.key === 'Enter') {
-                    console.log('It worked!');
-                    createUser(guestFirstName, guestLastName).catch((error) => {
-                      console.error('Error:', error);
-                    });
-                    // setGuestLastName(event.currentTarget.value);
-                  }
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  createUser(guestFirstName, guestLastName).catch((error) => {
+                    console.error('Error:', error);
+                  });
                 }
-                // e.key === 'Enter' && setGuestLastName(event.currentTarget.value);
-              }
+              }}
               disabled={disabled}
             />
           </label>
