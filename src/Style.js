@@ -1,6 +1,20 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
+export const appStyle = css`
+  /* //  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr; */
+`;
+
+export const flexDisplay = css`
+  display: flex;
+  justify-content: center;
+  width: 50vw;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
 export const inputFieldStyle = css`
   border-style: none;
   border-radius: 10px;
@@ -42,19 +56,14 @@ export const guestStyle = css`
   display: flex;
 `;
 
-export const appStyle = css`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-`;
-
-export const inputGridStyle = css`
-  grid-column-start: 1;
-  grid-column-end: 2;
+export const inputStyle = css`
+  /* grid-column: 1/2;
+  grid-row: 2/3; */
 `;
 
 export const guestListStyle = css`
-  grid-column-start: 2;
-  grid-column-end: 3;
+  /* grid-column: 2/3;
+  grid-row: 2/3; */
 `;
 
 export const removeButton = css`
@@ -78,6 +87,7 @@ export const removeButton = css`
   letter-spacing: 0.018rem;
   line-height: 1.269rem;
   opacity: 0.5;
+  margin-left: 10px;
   :hover {
     background-color: rgb(139, 0, 0);
   }

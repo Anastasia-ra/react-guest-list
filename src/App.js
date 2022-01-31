@@ -5,9 +5,10 @@ import {
   listStyle,
   guestStyle,
   appStyle,
-  inputGridStyle,
+  inputStyle,
   guestListStyle,
   removeButton,
+  flexDisplay,
 } from './Style';
 import { useState, useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
@@ -110,8 +111,8 @@ function App() {
   return (
     <div className="App" css={appStyle}>
       <h1> Party guest list </h1>
-      <div data-test-id="guest">
-        <div css={inputGridStyle}>
+      <div data-test-id="guest" css={flexDisplay}>
+        <div css={inputStyle}>
           <label>
             First name
             <input
@@ -155,35 +156,37 @@ function App() {
           </button>
         </div>
         {/* Displays loading message while guest list is loading*/}
-        {loading === true ? (
-          <p>Loading...</p>
-        ) : (
-          <GuestList css={guestListStyle}>
-            {guestsList.map((e) => {
-              return (
-                <div css={guestStyle} key={e.id + e.firstName}>
-                  <Guest
-                    key={e.id + e.firstName + e.lastName}
-                    firstName={e.firstName}
-                    lastName={e.lastName}
-                    attending={e.attending.toString()}
-                    id={e.id}
-                  />
-                  <button
-                    css={removeButton}
-                    onClick={() => {
-                      handleRemove(e.id).catch((error) => {
-                        console.error('Error:', error);
-                      });
-                    }}
-                  >
-                    Remove
-                  </button>
-                </div>
-              );
-            })}
-          </GuestList>
-        )}
+        <div css={guestListStyle}>
+          {loading === true ? (
+            <p>Loading...</p>
+          ) : (
+            <GuestList>
+              {guestsList.map((e) => {
+                return (
+                  <div css={guestStyle} key={e.id + e.firstName}>
+                    <Guest
+                      key={e.id + e.firstName + e.lastName}
+                      firstName={e.firstName}
+                      lastName={e.lastName}
+                      attending={e.attending.toString()}
+                      id={e.id}
+                    />
+                    <button
+                      css={removeButton}
+                      onClick={() => {
+                        handleRemove(e.id).catch((error) => {
+                          console.error('Error:', error);
+                        });
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                );
+              })}
+            </GuestList>
+          )}
+        </div>
       </div>
     </div>
   );
