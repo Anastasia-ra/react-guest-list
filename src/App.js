@@ -59,8 +59,7 @@ function Guest(props) {
 function App() {
   const [guestFirstName, setGuestFirstName] = useState('');
   const [guestLastName, setGuestLastName] = useState('');
-  const [allGuestsList, setAllGuestsList] = useState([]);
-  const [newGuestClicked, setNewGuestClicked] = useState(false);
+  const [guestsList, setGuestsList] = useState([]);
   const [remove, setRemove] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -78,7 +77,6 @@ function App() {
     });
     const createdGuest = await response.json();
     console.log(createdGuest);
-    setNewGuestClicked(!newGuestClicked);
     setGuestFirstName('');
     setGuestLastName('');
   }
@@ -99,30 +97,15 @@ function App() {
       const response = await fetch(`${baseUrl}/guests`);
       const allGuests = await response.json();
       console.log(allGuests);
-      setAllGuestsList(allGuests);
+      setGuestsList(allGuests);
       setLoading(false);
     }
     getAllGuests().catch((error) => {
       console.error('Error:', error);
     });
-  }, [/* guestFirstName, */ guestLastName, remove, newGuestClicked]);
+  }, [guestLastName, remove]);
 
   const disabled = loading ? true : false;
-
-  // creates User when enter in input
-  // useEffect(() => {
-  //   createUser(guestFirstName, guestLastName).catch((error) =>
-  //     console.error(error),
-  //   );
-  // }, [guestLastName]);
-
-  // handle Enter on Lastname
-  // function handleChange(event) {
-  //   if (event.key === 'Enter') {
-  //     console.log('It worked!');
-  //     // setGuestLastName(event.currentTarget.value);
-  //   }
-  // }
 
   return (
     <div className="App" css={appStyle}>
@@ -176,7 +159,7 @@ function App() {
           <p>Loading...</p>
         ) : (
           <GuestList css={guestListStyle}>
-            {allGuestsList.map((e) => {
+            {guestsList.map((e) => {
               return (
                 <div css={guestStyle} key={e.id + e.firstName}>
                   <Guest
