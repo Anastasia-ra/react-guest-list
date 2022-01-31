@@ -128,7 +128,7 @@ function App() {
       <div data-test-id="guest">
         <div css={inputGridStyle}>
           <label>
-            First Name
+            First name
             <input
               css={inputFieldStyle}
               value={guestFirstName}
@@ -140,7 +140,7 @@ function App() {
           </label>
           <br />
           <label>
-            Last Name
+            Last name
             <input
               css={inputFieldStyle}
               value={guestLastName}
