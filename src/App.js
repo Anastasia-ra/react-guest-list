@@ -100,12 +100,25 @@ function App() {
       const allGuests = await response.json();
       console.log(allGuests);
       setAllGuestsList(allGuests);
-      setLoading(false);
+      // setLoading(false);
     }
     getAllGuests().catch((error) => {
       console.error('Error:', error);
     });
   }, [guestFirstName, guestLastName, remove, newGuestClicked]);
+
+  useEffect(() => {
+    async function getAllGuests() {
+      const response = await fetch(`${baseUrl}/guests`);
+      const allGuests = await response.json();
+      console.log(allGuests);
+      setAllGuestsList(allGuests);
+      setLoading(false);
+    }
+    getAllGuests().catch((error) => {
+      console.error('Error:', error);
+    });
+  }, []);
 
   const disabled = loading ? true : false;
 
