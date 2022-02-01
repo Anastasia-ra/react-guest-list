@@ -136,3 +136,8 @@ export const removeAllStyle = css`
     background-color: rgb(193, 79, 79);
   }
 `;
+
+export const checkBoxStyle = css`
+  margin-top: auto;
+  margin-bottom: auto;
+`;

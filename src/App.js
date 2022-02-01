@@ -10,6 +10,7 @@ import {
   removeButton,
   attendingStyle,
   removeAllStyle,
+  checkBoxStyle,
 } from './Style';
 import { useState, useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
@@ -42,6 +43,7 @@ function Guest(props) {
   return (
     <li key={props.firstName} css={listStyle} data-test-id="guest">
       <input
+        css={checkBoxStyle}
         aria-label="attending"
         type="checkbox"
         checked={attending}
