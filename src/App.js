@@ -24,7 +24,6 @@ function GuestList({ children }) {
 // List item of each guest
 function Guest(props) {
   const [attending, setAttending] = useState(props.attending);
-  // const [isChecked, setIsChecked] = useState(attending);
 
   async function updateAttending(id) {
     const response = await fetch(`${baseUrl}/guests/${id}`, {
@@ -46,8 +45,6 @@ function Guest(props) {
         type="checkbox"
         checked={attending}
         onChange={() => {
-          // setIsChecked(e.currentTarget.checked);
-          // setIsChecked(attending);
           updateAttending(props.id).catch((error) => {
             console.error('Error:', error);
           });
@@ -170,7 +167,6 @@ function App() {
                       firstName={e.firstName}
                       lastName={e.lastName}
                       attending={e.attending}
-                      // attending={e.attending.toString()}
                       id={e.id}
                     />
                     <button
