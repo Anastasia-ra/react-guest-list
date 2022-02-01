@@ -8,7 +8,8 @@ import {
   inputStyle,
   guestListStyle,
   removeButton,
-  flexDisplay,
+  attendingStyle,
+  removeAllStyle,
 } from './Style';
 import { useState, useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
@@ -50,7 +51,15 @@ function Guest(props) {
           });
         }}
       />
-      Name: {props.firstName} {props.lastName}
+      <p>
+        Name: {props.firstName} {props.lastName}
+        <span> </span>
+      </p>
+      {attending ? (
+        <p css={attendingStyle}> attending</p>
+      ) : (
+        <p css={attendingStyle}>not attending</p>
+      )}
     </li>
   );
 }
@@ -80,7 +89,7 @@ function App() {
     setGuestLastName('');
   }
 
-  // Get all guests
+  // Remove one guest
 
   async function handleRemove(id) {
     const response = await fetch(`${baseUrl}/guests/${id}`, {
@@ -90,6 +99,16 @@ function App() {
     console.log(deletedGuest);
     setRemove(!remove);
   }
+
+  // Remove all guests
+
+  async function handleRemoveAllGuests() {
+    await guestsList.forEach((guest) => {
+      handleRemove(guest.id).catch((error) => console.error(error));
+    });
+  }
+
+  // Get all guests
 
   useEffect(() => {
     async function getAllGuests() {
@@ -109,7 +128,7 @@ function App() {
   return (
     <div className="App" css={appStyle}>
       <h1> Party guest list </h1>
-      <div css={flexDisplay}>
+      <div>
         <div css={inputStyle}>
           <label>
             First name
@@ -150,7 +169,17 @@ function App() {
               });
             }}
           >
-            Create User
+            Add guest
+          </button>
+          <button
+            css={removeAllStyle}
+            onClick={() => {
+              handleRemoveAllGuests().catch((error) => {
+                console.error('Error:', error);
+              });
+            }}
+          >
+            Remove all guests
           </button>
         </div>
         {/* Displays loading message while guest list is loading*/}
@@ -158,31 +187,46 @@ function App() {
           {loading === true ? (
             <p>Loading...</p>
           ) : (
-            <GuestList>
-              {guestsList.map((e) => {
-                return (
-                  <div css={guestStyle} key={e.id + e.firstName}>
-                    <Guest
-                      key={e.id + e.firstName + e.lastName}
-                      firstName={e.firstName}
-                      lastName={e.lastName}
-                      attending={e.attending}
-                      id={e.id}
-                    />
-                    <button
-                      css={removeButton}
-                      onClick={() => {
-                        handleRemove(e.id).catch((error) => {
-                          console.error('Error:', error);
-                        });
-                      }}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                );
-              })}
-            </GuestList>
+            <div>
+              <GuestList>
+                {guestsList.length === 0 && (
+                  <p>No one is invited :( Please add someone!</p>
+                )}
+                {guestsList.map((e) => {
+                  return (
+                    <div css={guestStyle} key={e.id + e.firstName}>
+                      <Guest
+                        key={e.id + e.firstName + e.lastName}
+                        firstName={e.firstName}
+                        lastName={e.lastName}
+                        attending={e.attending}
+                        id={e.id}
+                      />
+                      <button
+                        css={removeButton}
+                        onClick={() => {
+                          handleRemove(e.id).catch((error) => {
+                            console.error('Error:', error);
+                          });
+                        }}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  );
+                })}
+              </GuestList>
+              {/* <button
+                css={removeAllStyle}
+                onClick={() => {
+                  handleRemoveAllGuests().catch((error) => {
+                    console.error('Error:', error);
+                  });
+                }}
+              >
+                Remove all guests
+              </button> */}
+            </div>
           )}
         </div>
       </div>
