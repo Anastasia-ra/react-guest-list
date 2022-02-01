@@ -23,8 +23,8 @@ function GuestList({ children }) {
 
 // List item of each guest
 function Guest(props) {
-  const [toggleAttending, setToggleAttending] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [attending, setAttending] = useState(props.attending);
+  // const [isChecked, setIsChecked] = useState(attending);
 
   async function updateAttending(id) {
     const response = await fetch(`${baseUrl}/guests/${id}`, {
@@ -32,11 +32,11 @@ function Guest(props) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ attending: !toggleAttending }),
+      body: JSON.stringify({ attending: !attending }),
     });
     const updatedGuest = await response.json();
     console.log(updatedGuest);
-    setToggleAttending(!toggleAttending);
+    setAttending(!attending);
   }
 
   return (
@@ -44,9 +44,10 @@ function Guest(props) {
       <input
         aria-label="attending"
         type="checkbox"
-        checked={isChecked}
-        onChange={(e) => {
-          setIsChecked(e.currentTarget.checked);
+        checked={attending}
+        onChange={() => {
+          // setIsChecked(e.currentTarget.checked);
+          // setIsChecked(attending);
           updateAttending(props.id).catch((error) => {
             console.error('Error:', error);
           });
@@ -168,7 +169,8 @@ function App() {
                       key={e.id + e.firstName + e.lastName}
                       firstName={e.firstName}
                       lastName={e.lastName}
-                      attending={e.attending.toString()}
+                      attending={e.attending}
+                      // attending={e.attending.toString()}
                       id={e.id}
                     />
                     <button
