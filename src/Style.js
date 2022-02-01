@@ -1,15 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
-export const appStyle = css`
-  /* //  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr; */
-  /* width: 100vw;
-  height: 100vh;
-  background-color: blue; */
-`;
-
 export const flexDisplay = css`
   display: flex;
   justify-content: center;
@@ -26,7 +17,7 @@ export const inputFieldStyle = css`
   margin: 20px;
 `;
 
-export const buttonStyle = css`
+export const addButtonStyle = css`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -41,7 +32,6 @@ export const buttonStyle = css`
   border-radius: 0.25rem;
   cursor: pointer;
   padding: 8px 12px;
-  // width: auto;
   height: 36px;
   font-size: 1rem;
   letter-spacing: 0.018rem;
@@ -51,7 +41,7 @@ export const buttonStyle = css`
   }
 `;
 
-export const listStyle = css`
+export const listItemStyle = css`
   list-style: none;
   display: flex;
   // flex-wrap: nowrap;
@@ -59,7 +49,7 @@ export const listStyle = css`
   white-space: pre-wrap;
 `;
 
-export const attendingStyle = css`
+export const attendingTextStyle = css`
   color: rgba(190, 190, 190);
 `;
 
@@ -74,13 +64,11 @@ export const inputStyle = css`
 `;
 
 export const guestListStyle = css`
-  /* grid-column: 2/3;
-  grid-row: 2/3; */
   position: absolute;
   left: 610px;
 `;
 
-export const removeButton = css`
+export const removeButtonStyle = css`
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -108,7 +96,7 @@ export const removeButton = css`
   }
 `;
 
-export const removeAllStyle = css`
+export const removeAllButtonStyle = css`
   display: inline-flex;
   align-items: center;
   justify-content: center;

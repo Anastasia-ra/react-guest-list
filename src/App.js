@@ -1,15 +1,14 @@
 import './App.css';
 import {
   inputFieldStyle,
-  buttonStyle,
-  listStyle,
+  addButtonStyle,
+  listItemStyle,
   guestStyle,
-  appStyle,
   inputStyle,
   guestListStyle,
-  removeButton,
-  attendingStyle,
-  removeAllStyle,
+  removeButtonStyle,
+  attendingTextStyle,
+  removeAllButtonStyle,
   checkBoxStyle,
 } from './Style';
 import { useState, useEffect } from 'react';
@@ -41,7 +40,7 @@ function Guest(props) {
   }
 
   return (
-    <li key={props.firstName} css={listStyle} data-test-id="guest">
+    <li key={props.firstName} css={listItemStyle} data-test-id="guest">
       <input
         css={checkBoxStyle}
         aria-label="attending"
@@ -58,9 +57,9 @@ function Guest(props) {
         <span> </span>
       </p>
       {attending ? (
-        <p css={attendingStyle}> attending</p>
+        <p css={attendingTextStyle}> attending</p>
       ) : (
-        <p css={attendingStyle}>not attending</p>
+        <p css={attendingTextStyle}>not attending</p>
       )}
     </li>
   );
@@ -128,7 +127,7 @@ function App() {
   const disabled = loading ? true : false;
 
   return (
-    <div className="App" css={appStyle}>
+    <div className="App">
       <h1> Party guest list </h1>
       <div>
         <div css={inputStyle}>
@@ -164,7 +163,7 @@ function App() {
           </label>
           <br />
           <button
-            css={buttonStyle}
+            css={addButtonStyle}
             onClick={() => {
               createUser(guestFirstName, guestLastName).catch((error) => {
                 console.error('Error:', error);
@@ -174,7 +173,7 @@ function App() {
             Add guest
           </button>
           <button
-            css={removeAllStyle}
+            css={removeAllButtonStyle}
             onClick={() => {
               handleRemoveAllGuests().catch((error) => {
                 console.error('Error:', error);
@@ -205,7 +204,7 @@ function App() {
                         id={e.id}
                       />
                       <button
-                        css={removeButton}
+                        css={removeButtonStyle}
                         onClick={() => {
                           handleRemove(e.id).catch((error) => {
                             console.error('Error:', error);
@@ -218,16 +217,6 @@ function App() {
                   );
                 })}
               </GuestList>
-              {/* <button
-                css={removeAllStyle}
-                onClick={() => {
-                  handleRemoveAllGuests().catch((error) => {
-                    console.error('Error:', error);
-                  });
-                }}
-              >
-                Remove all guests
-              </button> */}
             </div>
           )}
         </div>
