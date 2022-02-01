@@ -14,7 +14,7 @@ import { useState, useEffect } from 'react';
 /** @jsxImportSource @emotion/react */
 // import { css } from '@emotion/react';
 
-const baseUrl = 'http://localhost:4000';
+const baseUrl = 'https://r-guestlist.herokuapp.com';
 
 // Displays list
 function GuestList({ children }) {
