@@ -40,7 +40,7 @@ function Guest(props) {
   }
 
   return (
-    <li key={props.firstName} css={listItemStyle} data-test-id="guest">
+    <li key={props.firstName} css={listItemStyle}>
       <input
         css={checkBoxStyle}
         aria-label="attending"
@@ -52,7 +52,7 @@ function Guest(props) {
           });
         }}
       />
-      <p>
+      <p data-test-id="guest">
         Name: {props.firstName} {props.lastName}
         <span> </span>
       </p>
