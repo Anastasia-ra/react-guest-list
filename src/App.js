@@ -59,6 +59,7 @@ function Guest(props) {
       ) : (
         <p css={attendingTextStyle}>not attending</p>
       )}
+      {props.children}
     </li>
   );
 }
@@ -213,18 +214,19 @@ function App() {
                         lastName={e.lastName}
                         attending={e.attending}
                         id={e.id}
-                      />
-                      <button
-                        css={removeButtonStyle}
-                        onClick={() => {
-                          handleRemove(e.id).catch((error) => {
-                            console.error('Error:', error);
-                          });
-                        }}
-                        aria-label={`Remove ${e.firstName} ${e.lastName}`}
                       >
-                        ✕
-                      </button>
+                        <button
+                          css={removeButtonStyle}
+                          onClick={() => {
+                            handleRemove(e.id).catch((error) => {
+                              console.error('Error:', error);
+                            });
+                          }}
+                          aria-label={`Remove ${e.firstName} ${e.lastName}`}
+                        >
+                          ✕
+                        </button>
+                      </Guest>
                     </div>
                   );
                 })}
