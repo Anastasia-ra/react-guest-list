@@ -69,6 +69,7 @@ function App() {
   const [guestsList, setGuestsList] = useState([]);
   const [remove, setRemove] = useState(false);
   const [loading, setLoading] = useState(true);
+  // const [guestsList2, setGuestsList2] = useState([]);
 
   // Add user
   async function createUser(input1, input2) {
@@ -86,6 +87,7 @@ function App() {
     console.log(createdGuest);
     setGuestFirstName('');
     setGuestLastName('');
+    //   setGuestsList2((prev) => [...prev, createdGuest]);
   }
 
   // Remove one guest
@@ -209,7 +211,7 @@ function App() {
                           });
                         }}
                       >
-                        ✕
+                        Remove
                       </button>
                     </div>
                   );
