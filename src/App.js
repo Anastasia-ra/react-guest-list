@@ -210,8 +210,9 @@ function App() {
                             console.error('Error:', error);
                           });
                         }}
+                        aria-label={`Remove ${e.firstName} ${e.lastName}`}
                       >
-                        Remove
+                        ✕
                       </button>
                     </div>
                   );
