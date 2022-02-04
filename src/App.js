@@ -66,10 +66,9 @@ function Guest(props) {
 function App() {
   const [guestFirstName, setGuestFirstName] = useState('');
   const [guestLastName, setGuestLastName] = useState('');
-  const [guestsList, setGuestsList] = useState([]);
   const [remove, setRemove] = useState(false);
   const [loading, setLoading] = useState(true);
-  // const [guestsList2, setGuestsList2] = useState([]);
+  const [guestsList, setGuestsList] = useState([]);
 
   // Add user
   async function createUser(input1, input2) {
@@ -87,26 +86,38 @@ function App() {
     console.log(createdGuest);
     setGuestFirstName('');
     setGuestLastName('');
-    //   setGuestsList2((prev) => [...prev, createdGuest]);
+    setGuestsList((prev) => [...prev, createdGuest]);
+    console.log(guestsList);
   }
 
   // Remove one guest
 
-  async function handleRemove(id) {
-    const response = await fetch(`${baseUrl}/guests/${id}`, {
+  async function handleRemove(inputId) {
+    const response = await fetch(`${baseUrl}/guests/${inputId}`, {
       method: 'DELETE',
     });
     const deletedGuest = await response.json();
     console.log(deletedGuest);
     setRemove(!remove);
+    setGuestsList(() => guestsList.filter((guest) => guest.id !== inputId));
+    console.log(setGuestsList);
   }
 
   // Remove all guests
 
   async function handleRemoveAllGuests() {
+    async function removeGuests(id) {
+      const response = await fetch(`${baseUrl}/guests/${id}`, {
+        method: 'DELETE',
+      });
+      const deletedGuest = await response.json();
+      console.log(deletedGuest);
+      setRemove(!remove);
+    }
     await guestsList.forEach((guest) => {
-      handleRemove(guest.id).catch((error) => console.error(error));
+      removeGuests(guest.id).catch((error) => console.error(error));
     });
+    setGuestsList([]);
   }
 
   // Get all guests
@@ -116,13 +127,13 @@ function App() {
       const response = await fetch(`${baseUrl}/guests`);
       const allGuests = await response.json();
       console.log(allGuests);
-      setGuestsList(allGuests);
       setLoading(false);
+      setGuestsList(allGuests);
     }
     getAllGuests().catch((error) => {
       console.error('Error:', error);
     });
-  }, [guestLastName, remove]);
+  }, []);
 
   const disabled = loading ? true : false;
 
